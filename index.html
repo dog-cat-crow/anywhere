@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Display Google Drive File</title>
+    <title>Display Dropbox File</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -21,19 +21,21 @@
 </head>
 <body>
 
-<h1>Google Drive File Viewer</h1>
+<h1>Dropbox File Viewer</h1>
 <div id="file-content">Loading content...</div>
 
 <script>
-    // File ID for hello.txt
-    const fileId = "11XOI0-OaCRukKYdAEVTj7KmPO9oDt_oE";
-
-    // Google Drive direct download URL
-    const fileUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
+    // Direct download link from Dropbox
+    const fileUrl = "https://www.dropbox.com/scl/fi/eq50fvq76x3b84g1cee39/hello.txt?rlkey=mn3fb7jqm2m78orgzh8u1f9v3&raw=1";
 
     // Fetch and display the file content
     fetch(fileUrl)
-        .then(response => response.text()) // Assuming the file is plain text
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.text(); // Assuming the file is plain text
+        })
         .then(data => {
             document.getElementById("file-content").innerText = data; // Display file content
         })
