@@ -3,23 +3,300 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Display Dropbox File</title>
+    <title>Message Sender</title>
     <style>
+        /* Global Styles */
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: black;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
+
+        body.dark-theme {
+            background-color: #121212;
+            color: white;
+        }
+
+        .theme-toggle {
+            width: 50px;
+            height: 50px;
+            background-color: black;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            cursor: pointer;
+            overflow: hidden;
+            transition: background-color 0.3s ease;
+        }
+
+        body.dark-theme .theme-toggle {
+            background-color: white;
+        }
+
+        .theme-toggle span {
+            position: absolute;
+            font-size: 20px;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .theme-toggle .moon {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .theme-toggle .sun {
+            transform: translateY(100%);
+            opacity: 0;
+        }
+
+        body.dark-theme .theme-toggle .moon {
+            transform: translateY(100%);
+            opacity: 0;
+        }
+
+        body.dark-theme .theme-toggle .sun {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .content {
+            margin-top: 70px;
+            width: 80%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .connection-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 20px;
+    position: relative;
+    width: 100%;
+    left: 70px;  /* Shift the element 50px to the right */
+}
+
+.connection-wrapper .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: red;  /* Color of the dot */
+    margin-right: 10px;  /* Space between the dot and the status message */
+}
+
+.connection-wrapper .connection-status {
+    font-size: 18px;
+    font-family: 'Verdana', sans-serif;
+}
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-left: 10px;
+        }
+
+        #telegram-dot {
+            background-color: red;
+        }
+
+        /* Adjust the message box width and align it to the left */
+/* Message box with 100px height */
+.message-box {
+    margin-bottom: 40px;
+    width: 80%;
+    height: 100px; /* Set height of the message box */
+    position: relative;
+}
+
+/* Adjust the textarea height to fit inside the message box */
+textarea {
+    width: 100%;
+    height: 120px; /* Reduced height of the textarea to fit within 100px message box */
+    padding: 10px;
+    font-size: 16px;
+    resize: none;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px; /* Adjust this if necessary */
+}
+
+/* Style for the circular send button */
+#send-circle {
+    width: 50px;
+    height: 50px;
+    background-color: #82cc45;
+    border-radius: 50%;
+    position: fixed; /* Changed from absolute to fixed for independent positioning */
+    top: 120px; /* Top margin set to 45px */
+    right: 20px; /* Placed at the rightmost of the HTML */
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+}
+
+#send-circle.animate {
+    animation: colorChange 0.5s infinite alternate;
+}
+
+/* Animation keyframes for color changes */
+@keyframes colorChange {
+    0% { background-color: #82cc45; }
+    50% { background-color: #45cc80; }
+    100% { background-color: #459fcc; }
+}
+
+        .iframe-box {
+    margin-top: 120px; /* Adjust this to 50px below the message box */
+    width: 100%;
+}
+
         iframe {
-            width: 100%;
-            height: 500px;
-            border: 1px solid #ccc;
+    width: 100%;
+    height: 300px;
+    border: none; /* Make the border invisible by default */
+    border-radius: 5px;
+}
+
+body.dark-theme iframe {
+    border: 4px solid #FFFFFF; /* Add border for the dark theme */
+}
+
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 20px;
+            font-size: 16px;
+            color: white;
+            border-radius: 5px;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            min-width: 200px;
+            max-width: 300px;
+        }
+
+        .notification.success {
+            background-color: #4CAF50;
+        }
+
+        .notification.failure {
+            background-color: #808080;
         }
     </style>
 </head>
 <body>
+    <div class="theme-toggle" onclick="toggleTheme()">
+        <span class="moon">🌙</span>
+        <span class="sun">☀️</span>
+    </div>
 
-<h1>Dropbox File Viewer</h1>
-<iframe src="https://www.dropbox.com/scl/fi/eq50fvq76x3b84g1cee39/hello.txt?rlkey=mn3fb7jqm2m78orgzh8u1f9v3&raw=1"></iframe>
+    <div class="content">
+        <div class="message-box">
+    <div class="connection-wrapper">
+        <div class="dot" id="telegram-dot"></div>
+        <div id="telegram-status" class="connection-status">Disconnected</div>
+    </div>
+    <textarea id="message-input" placeholder="Type your message..."></textarea>
+    <div id="send-circle" onclick="sendMessage()"></div>
+</div>
 
+        <div id="notification" class="notification"></div>
+
+        <div class="iframe-box">
+            <iframe id="iframe" src="https://restless-rice-82729.dog37.workers.dev/"></iframe>
+        </div>
+    </div>
+
+    <script>
+        let isDarkMode = false;
+
+        function toggleTheme() {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('dark-theme', isDarkMode);
+        }
+
+        function sendMessage() {
+    const message = document.getElementById('message-input').value;
+
+    if (!message.trim()) {
+        showNotification('Please enter a message!', 'failure');
+        return;
+    }
+
+    const sendCircle = document.getElementById('send-circle');
+    sendCircle.classList.add('animate'); // Start the animation
+
+    const telegramUrl = `https://api.telegram.org/bot7526962374:AAE0U2l7GWV-fxvDu3XB4iOdrZND_XdUvRo/sendMessage?chat_id=7140407293&text=${encodeURIComponent(message)}`;
+
+    fetch(telegramUrl)
+        .then(response => response.json())
+        .then(data => {
+            if (data.ok) {
+                showNotification('Message sent successfully!', 'success');
+                document.getElementById('message-input').value = '';
+                resetButtonColor(); // Restore the original color after animation
+            } else {
+                showNotification(`Message not sent! Error: ${data.description}`, 'failure');
+                resetButtonColor();
+            }
+        })
+        .catch(() => {
+            showNotification('Unable to Connect.', 'failure');
+            resetButtonColor();
+        });
+}
+
+function resetButtonColor() {
+    const sendCircle = document.getElementById('send-circle');
+    setTimeout(() => {
+        sendCircle.classList.remove('animate');
+    }, 3000); // Wait 3 seconds to allow the loop to complete
+}
+
+        function showNotification(message, type) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.style.display = 'block';
+
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
+        function updateStatus(service, isConnected) {
+            const dot = document.getElementById(`${service}-dot`);
+            const status = document.getElementById(`${service}-status`);
+            status.textContent = isConnected ? 'Connected' : 'Disconnected';
+            dot.style.backgroundColor = isConnected ? 'green' : 'red';
+        }
+
+        function checkInternetConnection() {
+            updateStatus('telegram', navigator.onLine);
+        }
+
+        checkInternetConnection();
+        setInterval(checkInternetConnection, 200);
+
+setInterval(() => {
+    const iframe = document.getElementById('iframe');
+
+    // Force reload by updating the iframe src with a timestamp (bypass cache)
+    iframe.src = iframe.src.split('?')[0] + '?t=' + new Date().getTime();
+}, 3000); // Reload every 10 seconds
+    </script>
 </body>
 </html>
