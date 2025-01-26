@@ -137,9 +137,6 @@ textarea {
     border: 1px solid #ccc;
     margin-bottom: 10px; /* Adjust this if necessary */
 }
-<div id="character-count-window">
-    <span id="character-count">0/2048</span>
-</div>
 
 .char-count {
     position: absolute;
@@ -258,6 +255,11 @@ body.dark-theme .iframe-box {
 
     <div class="content">
         <div class="message-box">
+    <textarea id="message-input" placeholder="Type your message..."></textarea>
+    <div id="character-count-window" class="char-count">
+        <span id="char-count">0/2048</span>
+    </div>
+        </div>
     <div class="connection-wrapper">
         <div class="dot" id="telegram-dot"></div>
         <div id="telegram-status" class="connection-status">Disconnected</div>
