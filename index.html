@@ -2,242 +2,281 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Contact</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+</head>
+ <style>
+        html, body {
+            overflow: hidden;
+            height: 100%;
+        }
+        body {
+            touch-action: none;
+        }
+    </style>
 <style>
-* {
-    -webkit-tap-highlight-color: transparent;
-    user-select: none;
-}
+        * {
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+    </style>
+<style>
+    /* Global Styles */
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        color: black;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
 
-body {
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-    color: black;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
+    body.dark-theme {
+        background-color: #121212;
+        color: white;
+    }
 
-body.dark-theme {
-    background-color: #121212;
-    color: white;
-}
+    .theme-toggle {
+        width: 50px;
+        height: 50px;
+        background-color: black;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        cursor: pointer;
+        overflow: hidden;
+        transition: background-color 0.3s ease;
+    }
 
-.theme-toggle {
-    width: 50px;
-    height: 50px;
-    background-color: black;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    cursor: pointer;
-    overflow: hidden;
-    transition: background-color 0.3s ease;
-}
+    body.dark-theme .theme-toggle {
+        background-color: white;
+    }
 
-body.dark-theme .theme-toggle {
-    background-color: white;
-}
+    .theme-toggle img {
+        position: absolute;
+        width: 35px;
+        height: 35px;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+    }
 
-.theme-toggle img {
-    position: absolute;
-    width: 35px;
-    height: 35px;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-}
+    .theme-toggle .moon {
+        transform: translateY(0);
+        opacity: 1;
+    }
 
-.theme-toggle .moon {
-    transform: translateY(0);
-    opacity: 1;
-}
+    .theme-toggle .sun {
+        transform: translateY(100%);
+        opacity: 0;
+    }
 
-.theme-toggle .sun {
-    transform: translateY(100%);
-    opacity: 0;
-}
+    body.dark-theme .theme-toggle .moon {
+        transform: translateY(100%);
+        opacity: 0;
+    }
 
-body.dark-theme .theme-toggle .moon {
-    transform: translateY(100%);
-    opacity: 0;
-}
+    body.dark-theme .theme-toggle .sun {
+        transform: translateY(0);
+        opacity: 1;
+    }
 
-body.dark-theme .theme-toggle .sun {
-    transform: translateY(0);
-    opacity: 1;
-}
+    .content {
+        margin-top: 70px;
+        width: 80%;
+        max-width: 600px;
+        text-align: center;
+    }
 
-.content {
-    margin-top: 70px;
-    width: 80%;
-    max-width: 600px;
-    text-align: center;
-}
+    .connection-wrapper {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin-bottom: 20px;
+        position: relative;
+        width: 100%;
+        left: 70px;
+    }
 
-.connection-wrapper {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin-bottom: 20px;
-    position: relative;
-    width: 100%;
-    left: 70px;
-}
+    .connection-wrapper .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: red;
+        margin-right: 10px;
+    }
 
-.connection-wrapper .dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: red;
-    margin-right: 10px;
-}
+    .connection-wrapper .connection-status {
+        font-size: 18px;
+        font-family: 'Verdana', sans-serif;
+    }
 
-.connection-wrapper .connection-status {
-    font-size: 18px;
-    font-family: 'Verdana', sans-serif;
-}
-
-.dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    margin-left: 10px;
-}
-
-#telegram-dot {
-    background-color: red;
-}
-
-.message-box {
-    margin-bottom: 40px;
-    width: 80%;
-    height: 100px;
-    position: relative;
-}
+    .message-box {
+        margin-bottom: 40px;
+        width: 80%;
+        height: auto;
+        position: relative;
+    }
 
 textarea {
     width: 100%;
-    height: 120px;
+    height: 120px; /* Reduced height of the textarea to fit within 100px message box */
     padding: 10px;
     font-size: 16px;
     resize: none;
-    border-radius: 5px;
+    border-radius: 4px; /* Original rounded corners */
     border: 1px solid #ccc;
-    margin-bottom: 10px;
+    margin-bottom: 10px; /* Adjust this if necessary */
 }
 
-.char-count {
-    position: absolute;
-    bottom: -25px;
-    right: 10px;
-    background-color: #d1c07b;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 14px;
+textarea:focus {
+    outline: none; /* Remove default outline */
+    border: 1px solid #ccc; /* Keep the original border */
+    box-shadow: 0 0 0 2px black; /* Add a bold black outline without affecting layout */
+    transition: box-shadow 0.2s ease; /* Smooth transition for focus effect */
+    border-radius: 4px; /* Ensure rounded corners are maintained on focus */
+}
+
+    #send-circle {
+        width: 50px;
+        height: 50px;
+        background-color: #82cc45;
+        border-radius: 50%;
+        position: fixed;
+        top: 120px;
+        right: 20px;
+        cursor: pointer;
+        transition: background-color 0.25s ease;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    .send-icon {
+        width: 70%;
+        height: 70%;
+        object-fit: contain;
+    }
+
+    #send-circle.animate {
+        animation: colorChange 0.5s infinite alternate;
+    }
+
+    @keyframes colorChange {
+        0% {
+            background-color: #82cc45;
+        }
+        50% {
+            background-color: #45cc80;
+        }
+        100% {
+            background-color: #459fcc;
+        }
+    }
+
+    .iframe-box {
+        position: fixed;
+        top: 300px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 300px;
+        height: 200px;
+        border: 5px solid transparent;
+        border-radius: 5px;
+        transition: border-color 0.3s ease;
+    }
+
+    body.dark-theme .iframe-box {
+        border-color: white;
+    }
+
+    .iframe-box iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+        border-radius: inherit;
+    }
+
+    .notification {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 15px 20px;
+        font-size: 16px;
+        color: white;
+        border-radius: 5px;
+        display: none;
+        z-index: 1000;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        min-width: 200px;
+        max-width: 300px;
+    }
+
+    .notification.success {
+        background-color: #4CAF50;
+    }
+
+    .notification.failure {
+        background-color: #808080;
+    }
+
+    /* Character Usage Display */
+      .message-box {
+    position: relative; /* Positioning context for absolute child elements */
+    margin-bottom: 20px; /* Space for the display bar, remove if not needed */
+}
+
+.message-box {
+    position: relative; /* Set position relative to enable absolute positioning for the child */
+}
+
+.message-box {
+    position: relative; /* Set position relative to enable absolute positioning for the child */
+}
+
+.message-box {
+    position: relative; /* Ensure the message box is the reference for the absolute positioning */
+}
+
+.char-usage {
+    font-family: 'Times New Roman', serif; /* Ensure Times New Roman is applied */
+    position: absolute; /* Position relative to the parent */
+    top: calc(100% - 14.5px); /* Move it up from the bottom */
+    right: 0; /* Align to the right edge of the parent */
+    width: 85px; /* Set a fixed width */
+    height: 20px; /* Set height to 20px */
+    background-color: #87edd2;
     color: black;
-    display: none;
+    font-size: 14px;
+    text-align: right; /* Align text content to the right */
+    border-radius: 0 0 5px 5px; /* Rounded bottom corners */
+    padding: 0 5px; /* Padding for spacing */
+    box-sizing: border-box; /* Include padding in width/height calculations */
+    white-space: nowrap; /* Prevent content from wrapping */
+    overflow: hidden; /* Hide overflowing content */
+    display: flex; /* Use flexbox for layout */
+    justify-content: flex-end; /* Align items to the right */
+    align-items: center; /* Center items vertically */
 }
 
-#send-circle {
-    width: 50px;
-    height: 50px;
-    background-color: #82cc45;
-    border-radius: 50%;
-    position: fixed;
-    top: 120px;
-    right: 20px;
-    cursor: pointer;
-    transition: background-color 0.25s ease;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
+.char-usage .number {
+    direction: rtl; /* Ensure the number grows leftwards */
+    text-align: right; /* Align the number to the right */
+    flex-shrink: 0; /* Prevent shrinking of the number */
 }
 
-.send-icon {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 70%;
-    height: 70%;
-    object-fit: contain;
-    transform: translate(-50%, -50%) translate(-2px, -2px);
+.char-usage .fixed {
+    direction: ltr; /* Keep the fixed text aligned properly */
+    flex-shrink: 0; /* Prevent shrinking of the fixed text */
 }
 
-#send-circle.animate {
-    animation: colorChange 0.5s infinite alternate;
-}
-
-@keyframes colorChange {
-    0% { background-color: #82cc45; }
-    50% { background-color: #45cc80; }
-    100% { background-color: #459fcc; }
-}
-
-.iframe-box {
-    position: fixed;
-    top: 300px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 300px;
-    height: 200px;
-}
-
-.iframe-box {
-    position: fixed;
-    top: 300px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 300px;
-    height: 200px;
-    border: 5px solid transparent;
-    border-radius: 5px;
-    transition: border-color 0.3s ease;
-}
-
-body.dark-theme .iframe-box {
-    border-color: white;
-}
-
-.iframe-box iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-    border-radius: inherit;
-}
-
-.notification {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 15px 20px;
-    font-size: 16px;
-    color: white;
-    border-radius: 5px;
-    display: none;
-    z-index: 1000;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    min-width: 200px;
-    max-width: 300px;
-}
-
-.notification.success {
-    background-color: #4CAF50;
-}
-
-.notification.failure {
-    background-color: #808080;
-}
 </style>
 </head>
 <body>
@@ -248,121 +287,152 @@ body.dark-theme .iframe-box {
 
     <div class="content">
         <div class="message-box">
-            <textarea id="message-input" placeholder="Type your message..."></textarea>
-            <div id="character-count-window" class="char-count">
-                <span id="char-count">0/2048</span>
+            <div class="connection-wrapper">
+                <div class="dot" id="telegram-dot"></div>
+                <div id="telegram-status" class="connection-status">Disconnected</div>
             </div>
-        </div>
 
-        <div class="connection-wrapper">
-            <div class="dot" id="telegram-dot"></div>
-            <div id="telegram-status" class="connection-status">Disconnected</div>
-        </div>
+            <textarea id="message-input" placeholder="Type your message..."></textarea>
 
-        <div id="send-circle" onclick="sendMessage()">
-            <img src="send.png" alt="Send" class="send-icon" />
-        </div>
+            <!-- Send Button -->
+            <div id="send-circle" onclick="sendMessage()">
+                <img src="send.png" alt="Send" class="send-icon" />
+            </div>
 
-        <div id="notification" class="notification"></div>
+            <!-- Character Usage Display -->
+            <div id="char-usage" class="char-usage">0 / 2048</div>
 
-        <div class="iframe-box">
-            <iframe id="iframe" src="https://restless-rice-82729.dog37.workers.dev/"></iframe>
+            <!-- Notification -->
+            <div id="notification" class="notification"></div>
+
+            <!-- Iframe -->
+            <div class="iframe-box">
+                <iframe id="iframe" src="https://restless-rice-82729.dog37.workers.dev/"></iframe>
+            </div>
         </div>
     </div>
 
     <script>
-        let isDarkMode = false;
+    let isDarkMode = false;
 
-        function toggleTheme() {
-            isDarkMode = !isDarkMode;
-            document.body.classList.toggle('dark-theme', isDarkMode);
+    // Toggle theme
+    function toggleTheme() {
+        isDarkMode = !isDarkMode;
+        document.body.classList.toggle('dark-theme', isDarkMode);
+    }
+
+    // Update character usage display
+    const messageInput = document.getElementById('message-input');
+    const charUsage = document.getElementById('char-usage');
+    const MAX_CHARACTERS = 2048;
+
+    messageInput.addEventListener('input', () => {
+        const charCount = messageInput.value.length;
+
+        // Limit input to MAX_CHARACTERS (2048)
+        if (charCount > MAX_CHARACTERS) {
+            messageInput.value = messageInput.value.substring(0, MAX_CHARACTERS);
         }
 
-        const textarea = document.getElementById('message-input');
-        const charCountDisplay = document.getElementById('char-count');
-        const maxLength = 2048;
+        // Update the character usage display text
+        charUsage.textContent = `${messageInput.value.length} / ${MAX_CHARACTERS}`;
 
-        // Show the character count div initially
-        charCountDisplay.style.display = 'block';
+        // Change the background color of the char-usage based on the character count
+        if (charCount <= 1023) {
+            charUsage.style.backgroundColor = '#87edd2'; // Default color
+        } else if (charCount <= 1535) {
+            charUsage.style.backgroundColor = '#e0ba2f';
+        } else if (charCount <= 2047) {
+            charUsage.style.backgroundColor = '#dba32a';
+        } else {
+            charUsage.style.backgroundColor = '#db8223';
+        }
+    });
 
-        textarea.addEventListener('input', function() {
-            const currentLength = textarea.value.length;
-            charCountDisplay.textContent = `${currentLength}/${maxLength}`;
+    // Warn before leaving the page if the message input is not empty
+    window.addEventListener('beforeunload', (event) => {
+        if (messageInput.value.trim()) {
+            const confirmationMessage = "Are you sure to leave? Your written message will not be saved!";
+            event.preventDefault(); // Standard for some browsers
+            event.returnValue = confirmationMessage; // For modern browsers
+            return confirmationMessage;
+        }
+    });
 
-            if (currentLength > maxLength) {
-                textarea.value = textarea.value.substring(0, maxLength); // Trim excess characters
-            }
-        });
+    // Send message functionality
+    function sendMessage() {
+        const message = messageInput.value;
 
-        function sendMessage() {
-            const message = document.getElementById('message-input').value;
+        if (!message.trim()) {
+            showNotification('Please enter a message!', 'failure');
+            return;
+        }
 
-            if (!message.trim()) {
-                showNotification('Please enter a message!', 'failure');
-                return;
-            }
+        const sendCircle = document.getElementById('send-circle');
+        sendCircle.classList.add('animate'); // Start animation
 
-            const sendCircle = document.getElementById('send-circle');
-            sendCircle.classList.add('animate'); // Start the animation
+        const telegramUrl = `https://api.telegram.org/bot7526962374:AAE0U2l7GWV-fxvDu3XB4iOdrZND_XdUvRo/sendMessage?chat_id=7140407293&text=${encodeURIComponent(message)}`;
 
-            const telegramUrl = `https://api.telegram.org/bot7526962374:AAE0U2l7GWV-fxvDu3XB4iOdrZND_XdUvRo/sendMessage?chat_id=7140407293&text=${encodeURIComponent(message)}`;
-
-            fetch(telegramUrl)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.ok) {
-                        showNotification('Message sent successfully!', 'success');
-                        document.getElementById('message-input').value = '';
-                        resetButtonColor(); // Restore the original color after animation
-                    } else {
-                        showNotification(`Message not sent! Error: ${data.description}`, 'failure');
-                        resetButtonColor();
-                    }
-                })
-                .catch(() => {
-                    showNotification('Unable to Connect.', 'failure');
+        fetch(telegramUrl)
+            .then(response => response.json())
+            .then(data => {
+                if (data.ok) {
+                    showNotification('Message sent successfully!', 'success');
+                    messageInput.value = '';
+                    charUsage.textContent = `0 / ${MAX_CHARACTERS}`; // Reset character usage
                     resetButtonColor();
-                });
-        }
+                } else {
+                    showNotification(`Message not sent! Error: ${data.description}`, 'failure');
+                    resetButtonColor();
+                }
+            })
+            .catch(() => {
+                showNotification('Unable to Connect.', 'failure');
+                resetButtonColor();
+            });
+    }
 
-        function resetButtonColor() {
-            const sendCircle = document.getElementById('send-circle');
-            setTimeout(() => {
-                sendCircle.classList.remove('animate');
-            }, 3000); // Wait 3 seconds to allow the loop to complete
-        }
+    // Reset button animation
+    function resetButtonColor() {
+        const sendCircle = document.getElementById('send-circle');
+        setTimeout(() => {
+            sendCircle.classList.remove('animate');
+        }, 3000);
+    }
 
-        function showNotification(message, type) {
-            const notification = document.getElementById('notification');
-            notification.textContent = message;
-            notification.className = `notification ${type}`;
-            notification.style.display = 'block';
+    // Show notifications
+    function showNotification(message, type) {
+        const notification = document.getElementById('notification');
+        notification.textContent = message;
+        notification.className = `notification ${type}`;
+        notification.style.display = 'block';
 
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 3000);
-        }
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, 3000);
+    }
 
-        function updateStatus(service, isConnected) {
-            const dot = document.getElementById(`${service}-dot`);
-            const status = document.getElementById(`${service}-status`);
-            status.textContent = isConnected ? 'Connected' : 'Disconnected';
-            dot.style.backgroundColor = isConnected ? 'green' : 'red';
-        }
+    // Update connection status
+    function updateStatus(service, isConnected) {
+        const dot = document.getElementById(`${service}-dot`);
+        const status = document.getElementById(`${service}-status`);
+        status.textContent = isConnected ? 'Connected' : 'Disconnected';
+        dot.style.backgroundColor = isConnected ? 'green' : 'red';
+    }
 
-        function checkInternetConnection() {
-            updateStatus('telegram', navigator.onLine);
-        }
+    // Check internet connection status
+    function checkInternetConnection() {
+        updateStatus('telegram', navigator.onLine);
+    }
 
-        checkInternetConnection();
-        setInterval(checkInternetConnection, 200);
+    checkInternetConnection();
+    setInterval(checkInternetConnection, 200);
 
-        setInterval(() => {
-            const iframe = document.getElementById('iframe');
-
-            // Force reload by updating the iframe src with a timestamp (bypass cache)
-            iframe.src = iframe.src.split('?')[0] + '?t=' + new Date().getTime();
-        }, 3000); // Reload every 10 seconds
-    </script>
+    // Refresh iframe every 10 seconds
+    setInterval(() => {
+        const iframe = document.getElementById('iframe');
+        iframe.src = iframe.src.split('?')[0] + '?t=' + new Date().getTime();
+    }, 4000);
+</script>
 </body>
 </html>
