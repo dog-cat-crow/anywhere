@@ -364,7 +364,7 @@ textarea:focus {
         const sendCircle = document.getElementById('send-circle');
         sendCircle.classList.add('animate');
 
-        const telegramUrl = `https://api.telegram.org/bot7526962374:AAE0U2l7GWV-fxvDu3XB4iOdrZND_XdUvRo/sendMessage?chat_id=7140407293&text=${encodeURIComponent(message)}`;
+        const telegramUrl = `https://x.dog37.workers.dev/${encodeURIComponent(message)}`;
 
         fetch(telegramUrl)
             .then(response => response.json())
