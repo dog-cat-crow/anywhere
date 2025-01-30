@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>X Contact</title>
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 </head>
@@ -21,6 +20,7 @@
         }
     </style>
 <style>
+    /* Global Styles */
     body {
         font-family: 'Arial', sans-serif;
         margin: 0;
@@ -124,21 +124,21 @@
 
 textarea {
     width: 100%;
-    height: 120px;
+    height: 120px; /* Reduced height of the textarea to fit within 100px message box */
     padding: 10px;
     font-size: 16px;
     resize: none;
-    border-radius: 4px;
+    border-radius: 4px; /* Original rounded corners */
     border: 1px solid #ccc;
-    margin-bottom: 10px;
+    margin-bottom: 10px; /* Adjust this if necessary */
 }
 
 textarea:focus {
-    outline: none;
-    border: 1px solid #ccc;
-    box-shadow: 0 0 0 2px black;
-    transition: box-shadow 0.2s ease;
-    border-radius: 4px;
+    outline: none; /* Remove default outline */
+    border: 1px solid #ccc; /* Keep the original border */
+    box-shadow: 0 0 0 2px black; /* Add a bold black outline without affecting layout */
+    transition: box-shadow 0.2s ease; /* Smooth transition for focus effect */
+    border-radius: 4px; /* Ensure rounded corners are maintained on focus */
 }
 
     #send-circle {
@@ -158,15 +158,10 @@ textarea:focus {
     }
 
     .send-icon {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 70%;
-    height: 70%;
-    object-fit: contain;
-    transform: translate(-50%, -50%) translate(-2px, -2px);
-}
+        width: 70%;
+        height: 70%;
+        object-fit: contain;
+    }
 
     #send-circle.animate {
         animation: colorChange 0.5s infinite alternate;
@@ -232,53 +227,54 @@ textarea:focus {
         background-color: #808080;
     }
 
+    /* Character Usage Display */
       .message-box {
-    position: relative;
-    margin-bottom: 20px;
+    position: relative; /* Positioning context for absolute child elements */
+    margin-bottom: 20px; /* Space for the display bar, remove if not needed */
 }
 
 .message-box {
-    position: relative;
+    position: relative; /* Set position relative to enable absolute positioning for the child */
 }
 
 .message-box {
-    position: relative;
+    position: relative; /* Set position relative to enable absolute positioning for the child */
 }
 
 .message-box {
-    position: relative;
+    position: relative; /* Ensure the message box is the reference for the absolute positioning */
 }
 
 .char-usage {
-    font-family: 'Times New Roman', serif;
-    position: absolute;
-    top: calc(100% - 14.5px);
-    right: 0;
-    width: 85px;
-    height: 20px;
+    font-family: 'Times New Roman', serif; /* Ensure Times New Roman is applied */
+    position: absolute; /* Position relative to the parent */
+    top: calc(100% - 14.5px); /* Move it up from the bottom */
+    right: 0; /* Align to the right edge of the parent */
+    width: 85px; /* Set a fixed width */
+    height: 20px; /* Set height to 20px */
     background-color: #87edd2;
     color: black;
     font-size: 14px;
-    text-align: right;
-    border-radius: 0 0 5px 5px;
-    padding: 0 5px;
-    box-sizing: border-box;
-    white-space: nowrap;
-    overflow: hidden;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
+    text-align: right; /* Align text content to the right */
+    border-radius: 0 0 5px 5px; /* Rounded bottom corners */
+    padding: 0 5px; /* Padding for spacing */
+    box-sizing: border-box; /* Include padding in width/height calculations */
+    white-space: nowrap; /* Prevent content from wrapping */
+    overflow: hidden; /* Hide overflowing content */
+    display: flex; /* Use flexbox for layout */
+    justify-content: flex-end; /* Align items to the right */
+    align-items: center; /* Center items vertically */
 }
 
 .char-usage .number {
-    direction: rtl;
-    text-align: right;
-    flex-shrink: 0;
+    direction: rtl; /* Ensure the number grows leftwards */
+    text-align: right; /* Align the number to the right */
+    flex-shrink: 0; /* Prevent shrinking of the number */
 }
 
 .char-usage .fixed {
-    direction: ltr; /*
-    flex-shrink: 0;
+    direction: ltr; /* Keep the fixed text aligned properly */
+    flex-shrink: 0; /* Prevent shrinking of the fixed text */
 }
 
 </style>
@@ -298,21 +294,25 @@ textarea:focus {
 
             <textarea id="message-input" placeholder="Type your message..."></textarea>
 
+            <!-- Send Button -->
             <div id="send-circle" onclick="sendMessage()">
                 <img src="send.png" alt="Send" class="send-icon" />
             </div>
 
+            <!-- Character Usage Display -->
             <div id="char-usage" class="char-usage">0 / 2048</div>
 
+            <!-- Notification -->
             <div id="notification" class="notification"></div>
 
+            <!-- Iframe -->
             <div class="iframe-box">
-                <iframe id="iframe" src="https://i.dog37.workers.dev/"></iframe>
+                <iframe id="iframe" src="https://restless-rice-82729.dog37.workers.dev/"></iframe>
             </div>
         </div>
     </div>
 
-    <script>
+<script>
     let isDarkMode = false;
         
     function toggleTheme() {
@@ -354,67 +354,56 @@ textarea:focus {
     });
 
     function sendMessage() {
-        const message = messageInput.value;
+    const message = messageInput.value.trim();
 
-        if (!message.trim()) {
-            showNotification('Please enter a message!', 'failure');
-            return;
-        }
-
-        const sendCircle = document.getElementById('send-circle');
-        sendCircle.classList.add('animate');
-
-        const telegramUrl = `https://x.dog37.workers.dev/${encodeURIComponent(message)}`;
-
-        fetch(telegramUrl)
-            .then(response => response.json())
-            .then(data => {
-                if (data.ok) {
-                    fetch(telegramUrl)
-    .then(response => response.text()) // Change to `.text()` if response is not JSON
-    .then(data => {
-        console.log("Server Response:", data); // Debugging
-        if (data.includes("Message sent")) { // Adjust condition based on actual response
-            showNotification('Message sent successfully!', 'success');
-            messageInput.value = '';
-            charUsage.textContent = `0 / ${MAX_CHARACTERS}`;
-        } else {
-            showNotification(`Message not sent! Server response: ${data}`, 'failure');
-        }
-        resetButtonColor();
-    });
-    }Notification('Message sent successfully!', 'success');
-                    messageInput.value = '';
-                    charUsage.textContent = `0 / ${MAX_CHARACTERS}`;
-                    resetButtonColor();
-                } else {
-                    showNotification(`Message not sent! Error: ${data.description}`, 'failure');
-                    resetButtonColor();
-                }
-            })
-            .catch(() => {
-                showNotification('Unable to Connect.', 'failure');
-                resetButtonColor();
-            });
+    if (!message) {
+        showNotification('Please enter a message!', 'failure');
+        return;
     }
 
-    function resetButtonColor() {
-        const sendCircle = document.getElementById('send-circle');
-        setTimeout(() => {
-            sendCircle.classList.remove('animate');
-        }, 3000);
-    }
+    const sendCircle = document.getElementById('send-circle');
+    sendCircle.classList.add('animate');
 
-    function showNotification(message, type) {
-        const notification = document.getElementById('notification');
-        notification.textContent = message;
-        notification.className = `notification ${type}`;
-        notification.style.display = 'block';
+    const requestUrl = `https://x.dog37.workers.dev/?msg=${encodeURIComponent(message)}`;
 
-        setTimeout(() => {
-            notification.style.display = 'none';
-        }, 3000);
-    }
+    fetch(requestUrl)
+        .then(response => response.text()) // Handle as plain text
+        .then(data => {
+            console.log("Server Response:", data); // Debugging
+
+            if (data.trim().toLowerCase() === "success") { 
+                showNotification('Message sent successfully!', 'success');
+                messageInput.value = ''; // Clear input after successful send
+                charUsage.textContent = `0 / ${MAX_CHARACTERS}`;
+            } else {
+                showNotification('Failed to send message!', 'failure');
+            }
+
+            resetButtonColor();
+        })
+        .catch(() => {
+            showNotification('Failed to send message!', 'failure');
+            resetButtonColor();
+        });
+}
+
+function resetButtonColor() {
+    const sendCircle = document.getElementById('send-circle');
+    setTimeout(() => {
+        sendCircle.classList.remove('animate');
+    }, 3000);
+}
+
+function showNotification(message, type) {
+    const notification = document.getElementById('notification');
+    notification.textContent = message;
+    notification.className = `notification ${type}`;
+    notification.style.display = 'block';
+
+    setTimeout(() => {
+        notification.style.display = 'none';
+    }, 3000);
+}
 
     function updateStatus(service, isConnected) {
         const dot = document.getElementById(`${service}-dot`);
@@ -430,7 +419,7 @@ textarea:focus {
     checkInternetConnection();
     setInterval(checkInternetConnection, 200);
 
-        //Refresh the IFrame every x seconds
+    // Refresh the IFrame every 4 seconds
     setInterval(() => {
         const iframe = document.getElementById('iframe');
         iframe.src = iframe.src.split('?')[0] + '?t=' + new Date().getTime();
