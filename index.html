@@ -370,7 +370,20 @@ textarea:focus {
             .then(response => response.json())
             .then(data => {
                 if (data.ok) {
-                    showNotification('Message sent successfully!', 'success');
+                    fetch(telegramUrl)
+    .then(response => response.text()) // Change to `.text()` if response is not JSON
+    .then(data => {
+        console.log("Server Response:", data); // Debugging
+        if (data.includes("Message sent")) { // Adjust condition based on actual response
+            showNotification('Message sent successfully!', 'success');
+            messageInput.value = '';
+            charUsage.textContent = `0 / ${MAX_CHARACTERS}`;
+        } else {
+            showNotification(`Message not sent! Server response: ${data}`, 'failure');
+        }
+        resetButtonColor();
+    });
+    }Notification('Message sent successfully!', 'success');
                     messageInput.value = '';
                     charUsage.textContent = `0 / ${MAX_CHARACTERS}`;
                     resetButtonColor();
