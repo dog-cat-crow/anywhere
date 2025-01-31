@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>X Contact</title>
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 </head>
  <style>
-        html, body {
-            overflow: hidden;
-            height: 100%;
-        }
-        body {
-            touch-action: none;
-        }
-    </style>
+    html, body {
+        overflow: hidden;
+        height: 100%;
+    }
+    body {
+        touch-action: none;
+    }
+</style>
 <style>
-        * {
-            -webkit-tap-highlight-color: transparent;
-            user-select: none;
-        }
-    </style>
+    * {
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+    }
+</style>
 <style>
-    /* Global Styles */
     body {
         font-family: 'Arial', sans-serif;
         margin: 0;
@@ -122,24 +122,24 @@
         position: relative;
     }
 
-textarea {
-    width: 100%;
-    height: 120px; /* Reduced height of the textarea to fit within 100px message box */
-    padding: 10px;
-    font-size: 16px;
-    resize: none;
-    border-radius: 4px; /* Original rounded corners */
-    border: 1px solid #ccc;
-    margin-bottom: 10px; /* Adjust this if necessary */
-}
+    textarea {
+        width: 100%;
+        height: 120px;
+        padding: 10px;
+        font-size: 16px;
+        resize: none;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+    }
 
-textarea:focus {
-    outline: none; /* Remove default outline */
-    border: 1px solid #ccc; /* Keep the original border */
-    box-shadow: 0 0 0 2px black; /* Add a bold black outline without affecting layout */
-    transition: box-shadow 0.2s ease; /* Smooth transition for focus effect */
-    border-radius: 4px; /* Ensure rounded corners are maintained on focus */
-}
+    textarea:focus {
+        outline: none;
+        border: 1px solid #ccc;
+        box-shadow: 0 0 0 2px black;
+        transition: box-shadow 0.2s ease;
+        border-radius: 4px;
+    }
 
     #send-circle {
         width: 50px;
@@ -158,25 +158,14 @@ textarea:focus {
     }
 
     .send-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         width: 70%;
         height: 70%;
         object-fit: contain;
-    }
-
-    #send-circle.animate {
-        animation: colorChange 0.5s infinite alternate;
-    }
-
-    @keyframes colorChange {
-        0% {
-            background-color: #82cc45;
-        }
-        50% {
-            background-color: #45cc80;
-        }
-        100% {
-            background-color: #459fcc;
-        }
+        transform: translate(-50%, -50%) translate(-2px, -2px);
     }
 
     .iframe-box {
@@ -202,81 +191,40 @@ textarea:focus {
         border-radius: inherit;
     }
 
-    .notification {
-        position: fixed;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        padding: 15px 20px;
-        font-size: 16px;
-        color: white;
-        border-radius: 5px;
-        display: none;
-        z-index: 1000;
-        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-        text-align: center;
-        min-width: 200px;
-        max-width: 300px;
+    .message-box {
+        position: relative;
     }
 
-    .notification.success {
-        background-color: #4CAF50;
+    .char-usage {
+        font-family: 'Times New Roman', serif;
+        position: absolute;
+        top: calc(100% - 14.5px);
+        right: 0;
+        width: 85px;
+        height: 20px;
+        background-color: #87edd2;
+        color: black;
+        font-size: 14px;
+        text-align: right;
+        border-radius: 0 0 5px 5px;
+        padding: 0 5px;
+        box-sizing: border-box;
+        white-space: nowrap;
+        overflow: hidden;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
     }
 
-    .notification.failure {
-        background-color: #808080;
+    .char-usage .number {
+        direction: rtl;
+        text-align: right;
+        flex-shrink: 0;
     }
 
-    /* Character Usage Display */
-      .message-box {
-    position: relative; /* Positioning context for absolute child elements */
-    margin-bottom: 20px; /* Space for the display bar, remove if not needed */
-}
-
-.message-box {
-    position: relative; /* Set position relative to enable absolute positioning for the child */
-}
-
-.message-box {
-    position: relative; /* Set position relative to enable absolute positioning for the child */
-}
-
-.message-box {
-    position: relative; /* Ensure the message box is the reference for the absolute positioning */
-}
-
-.char-usage {
-    font-family: 'Times New Roman', serif; /* Ensure Times New Roman is applied */
-    position: absolute; /* Position relative to the parent */
-    top: calc(100% - 14.5px); /* Move it up from the bottom */
-    right: 0; /* Align to the right edge of the parent */
-    width: 85px; /* Set a fixed width */
-    height: 20px; /* Set height to 20px */
-    background-color: #87edd2;
-    color: black;
-    font-size: 14px;
-    text-align: right; /* Align text content to the right */
-    border-radius: 0 0 5px 5px; /* Rounded bottom corners */
-    padding: 0 5px; /* Padding for spacing */
-    box-sizing: border-box; /* Include padding in width/height calculations */
-    white-space: nowrap; /* Prevent content from wrapping */
-    overflow: hidden; /* Hide overflowing content */
-    display: flex; /* Use flexbox for layout */
-    justify-content: flex-end; /* Align items to the right */
-    align-items: center; /* Center items vertically */
-}
-
-.char-usage .number {
-    direction: rtl; /* Ensure the number grows leftwards */
-    text-align: right; /* Align the number to the right */
-    flex-shrink: 0; /* Prevent shrinking of the number */
-}
-
-.char-usage .fixed {
-    direction: ltr; /* Keep the fixed text aligned properly */
-    flex-shrink: 0; /* Prevent shrinking of the fixed text */
-}
-
+    .char-usage .fixed {
+        direction: ltr;
+    }
 </style>
 </head>
 <body>
@@ -294,136 +242,216 @@ textarea:focus {
 
             <textarea id="message-input" placeholder="Type your message..."></textarea>
 
-            <!-- Send Button -->
             <div id="send-circle" onclick="sendMessage()">
                 <img src="send.png" alt="Send" class="send-icon" />
             </div>
 
-            <!-- Character Usage Display -->
             <div id="char-usage" class="char-usage">0 / 2048</div>
 
-            <!-- Notification -->
             <div id="notification" class="notification"></div>
 
-            <!-- Iframe -->
             <div class="iframe-box">
-                <iframe id="iframe" src="https://restless-rice-82729.dog37.workers.dev/"></iframe>
+                <iframe id="iframe" src="https://i.dog37.workers.dev/broadcast"></iframe>
             </div>
         </div>
     </div>
 
 <script>
-    let isDarkMode = false;
-        
-    function toggleTheme() {
-        isDarkMode = !isDarkMode;
-        document.body.classList.toggle('dark-theme', isDarkMode);
+let isDarkMode = false;
+
+function toggleTheme() {
+    isDarkMode = !isDarkMode;
+    document.body.classList.toggle('dark-theme', isDarkMode);
+}
+
+const messageInput = document.getElementById('message-input');
+const charUsage = document.getElementById('char-usage');
+const MAX_CHARACTERS = 2048;
+
+messageInput.addEventListener('input', () => {
+    const charCount = messageInput.value.length;
+
+    if (charCount > MAX_CHARACTERS) {
+        messageInput.value = messageInput.value.substring(0, MAX_CHARACTERS);
     }
 
-    const messageInput = document.getElementById('message-input');
-    const charUsage = document.getElementById('char-usage');
-    const MAX_CHARACTERS = 2048;
+    charUsage.textContent = `${messageInput.value.length} / ${MAX_CHARACTERS}`;
 
-    messageInput.addEventListener('input', () => {
-        const charCount = messageInput.value.length;
+    if (charCount <= 1023) {
+        charUsage.style.backgroundColor = '#87edd2';
+    } else if (charCount <= 1535) {
+        charUsage.style.backgroundColor = '#e0ba2f';
+    } else if (charCount <= 2047) {
+        charUsage.style.backgroundColor = '#dba32a';
+    } else {
+        charUsage.style.backgroundColor = '#db8223';
+    }
+});
 
-        if (charCount > MAX_CHARACTERS) {
-            messageInput.value = messageInput.value.substring(0, MAX_CHARACTERS);
-        }
-        
-        charUsage.textContent = `${messageInput.value.length} / ${MAX_CHARACTERS}`;
+window.addEventListener('beforeunload', (event) => {
+    if (messageInput.value.trim()) {
+        const confirmationMessage = "Are you sure to leave? Your written message will not be saved!";
+        event.preventDefault();
+        event.returnValue = confirmationMessage;
+        return confirmationMessage;
+    }
+});
 
-        if (charCount <= 1023) {
-            charUsage.style.backgroundColor = '#87edd2';
-        } else if (charCount <= 1535) {
-            charUsage.style.backgroundColor = '#e0ba2f';
-        } else if (charCount <= 2047) {
-            charUsage.style.backgroundColor = '#dba32a';
-        } else {
-            charUsage.style.backgroundColor = '#db8223';
-        }
-    });
+const sendCircle = document.getElementById('send-circle');
+const colors = [
+    '#db851d', '#dbbc1d', '#c5db1d', '#92db1d', '#4fdb1d',
+    '#18d680', '#18d6d6', '#18a0d6', '#185bd6', '#4846e0',
+    '#8146e0', '#b34cd9', '#d64ba3', '#d64b64'
+];
+let currentColorIndex = 0;
+let isFastLoop = false;
+let lastNotificationTime = 0;
 
-    window.addEventListener('beforeunload', (event) => {
-        if (messageInput.value.trim()) {
-            const confirmationMessage = "Are you sure to leave? Your written message will not be saved!";
-            event.preventDefault();
-            event.returnValue = confirmationMessage;
-            return confirmationMessage;
-        }
-    });
+function changeButtonColor() {
+    sendCircle.style.transition = "background-color 0.1s ease"; // 0.1s transition effect for fast loop
+    sendCircle.style.backgroundColor = colors[currentColorIndex];
+    currentColorIndex = (currentColorIndex + 1) % colors.length;
+}
 
-    function sendMessage() {
-    const message = messageInput.value.trim();
+let sendButtonLoopInterval;
 
-    if (!message) {
-        showNotification('Please enter a message!', 'failure');
+function startNormalLoop() {
+    sendButtonLoopInterval = setInterval(() => {
+        changeButtonColor(); // Keep changing the button color
+        sendCircle.style.transition = "background-color 0.3s ease"; // Apply transition for smooth color change
+    }, 1500); // Normal loop speed (1.5 sec)
+}
+
+// New function that triggers startNormalLoop on page load
+function autoStartLoop() {
+    startNormalLoop();  // This will trigger the loop to start
+}
+
+// Automatically trigger the loop when the page is loaded
+autoStartLoop();  // This executes startNormalLoop() right when the page loads
+
+// Function to start normal speed loop (1.5 sec)
+function startNormalLoop() {
+    clearInterval(sendButtonLoopInterval);
+    sendButtonLoopInterval = setInterval(() => {
+        changeButtonColor();
+        sendCircle.style.transition = "background-color 0.3s ease"; // Apply transition effect
+    }, 1500); // Normal loop speed (1.5 sec)
+}
+
+// Function to start fast speed loop (0.1 sec)
+function startFastLoop() {
+    clearInterval(sendButtonLoopInterval);
+    sendButtonLoopInterval = setInterval(changeButtonColor, 100); // Fast loop speed (0.1 sec)
+}
+
+function sendMessage() {
+    const message = messageInput.value;
+    const currentTime = Date.now();
+
+    if (currentTime - lastNotificationTime < 1500) {
         return;
     }
 
-    const sendCircle = document.getElementById('send-circle');
-    sendCircle.classList.add('animate');
+    lastNotificationTime = currentTime;
 
-    const requestUrl = `https://x.dog37.workers.dev/?msg=${encodeURIComponent(message)}`;
+    if (!message.trim()) {
+        showNotification('Please enter a message!', 'failure', '#998971');
+        return;
+    }
 
-    fetch(requestUrl)
-        .then(response => response.text()) // Handle as plain text
+    // Start fast loop when sending
+    startFastLoop();
+
+    const telegramUrl = `https://x.dog37.workers.dev/?transmit=${encodeURIComponent(message)}`;
+
+    // Send the message request
+    fetch(telegramUrl)
+        .then(response => response.text())
         .then(data => {
-            console.log("Server Response:", data); // Debugging
-
-            if (data.trim().toLowerCase() === "success") { 
-                showNotification('Message sent successfully!', 'success');
-                messageInput.value = ''; // Clear input after successful send
+            if (data === 'Message sent successfully') {
+                showNotification(data, 'success', '#3de09c');
+                messageInput.value = '';
                 charUsage.textContent = `0 / ${MAX_CHARACTERS}`;
             } else {
-                showNotification('Failed to send message!', 'failure');
+                showNotification(data, 'failure', '#b54e4e');
             }
 
-            resetButtonColor();
+            // After 1.5 seconds, return to normal loop
+            setTimeout(() => {
+                startNormalLoop();
+            }, 1500);
         })
         .catch(() => {
-            showNotification('Failed to send message!', 'failure');
-            resetButtonColor();
+            showNotification('Can\'t Connect', 'failure', '#b54e4e');
         });
 }
 
-function resetButtonColor() {
-    const sendCircle = document.getElementById('send-circle');
-    setTimeout(() => {
-        sendCircle.classList.remove('animate');
-    }, 3000);
-}
+function showNotification(message, type, bgColor) {
+    const existingNotification = document.getElementById('notification');
+    if (existingNotification) {
+        existingNotification.remove();
+    }
 
-function showNotification(message, type) {
-    const notification = document.getElementById('notification');
+    const notification = document.createElement('div');
+    notification.id = 'notification';
+    notification.classList.add('notification');
     notification.textContent = message;
-    notification.className = `notification ${type}`;
-    notification.style.display = 'block';
+
+    if (bgColor) {
+        notification.style.backgroundColor = bgColor;
+    } else {
+        if (type === 'success') {
+            notification.style.backgroundColor = '#3de09c';
+        } else if (type === 'failure') {
+            notification.style.backgroundColor = '#b54e4e';
+        } else {
+            notification.style.backgroundColor = '#998971';
+        }
+    }
+
+    notification.style.fontWeight = 'bold';
+    notification.style.color = 'black';
+    notification.style.borderRadius = '50px';
+    notification.style.padding = '10px 20px';
+    notification.style.boxSizing = 'border-box';
+    notification.style.whiteSpace = 'nowrap';
+    notification.style.width = 'auto';
+    notification.style.position = 'fixed';
+    notification.style.bottom = '30px';
+    notification.style.zIndex = '1000';
+    notification.style.opacity = '0.9';
+
+    document.body.appendChild(notification);
+    notification.style.animation = 'fadeIn 0.6s forwards';
 
     setTimeout(() => {
-        notification.style.display = 'none';
+        notification.style.animation = 'fadeOut 0.6s forwards';
     }, 3000);
+
+    setTimeout(() => {
+        notification.remove();
+    }, 3600);
 }
 
-    function updateStatus(service, isConnected) {
-        const dot = document.getElementById(`${service}-dot`);
-        const status = document.getElementById(`${service}-status`);
-        status.textContent = isConnected ? 'Connected' : 'Disconnected';
-        dot.style.backgroundColor = isConnected ? 'green' : 'red';
-    }
+function updateStatus(service, isConnected) {
+    const dot = document.getElementById(`${service}-dot`);
+    const status = document.getElementById(`${service}-status`);
+    status.textContent = isConnected ? 'Connected' : 'Disconnected';
+    dot.style.backgroundColor = isConnected ? '#1bcf36' : '#d93b38'; // Updated colors
+}
 
-    function checkInternetConnection() {
-        updateStatus('telegram', navigator.onLine);
-    }
+function checkInternetConnection() {
+    updateStatus('telegram', navigator.onLine);
+}
 
-    checkInternetConnection();
-    setInterval(checkInternetConnection, 200);
+checkInternetConnection();
+setInterval(checkInternetConnection, 200);
 
-    // Refresh the IFrame every 4 seconds
-    setInterval(() => {
-        const iframe = document.getElementById('iframe');
-        iframe.src = iframe.src.split('?')[0] + '?t=' + new Date().getTime();
-    }, 4000);
+setInterval(() => {
+    const iframe = document.getElementById('iframe');
+    iframe.src = iframe.src.split('?')[0] + '?t=' + new Date().getTime();
+}, 4000);
 </script>
 </body>
 </html>
