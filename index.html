@@ -339,10 +339,15 @@ function startNormalLoop() {
     }, 1500); // Normal loop speed (1.5 sec)
 }
 
-// Function to start fast speed loop (0.1 sec)
+// Function to start fast speed loop (0.1 sec) and revert after 1.5 sec
 function startFastLoop() {
     clearInterval(sendButtonLoopInterval);
     sendButtonLoopInterval = setInterval(changeButtonColor, 100); // Fast loop speed (0.1 sec)
+    
+    // Stop fast loop after 1.5 seconds and revert to normal loop
+    setTimeout(() => {
+        startNormalLoop(); // Revert to normal loop after 1.5 seconds
+    }, 1500); // After 1.5 seconds
 }
 
 function sendMessage() {
@@ -356,7 +361,7 @@ function sendMessage() {
     lastNotificationTime = currentTime;
 
     if (!message.trim()) {
-        showNotification('Please enter a message!', 'failure', '#998971');
+        showNotification('Please enter a message!', 'failure', '#ebbe6c');
         return;
     }
 
@@ -370,11 +375,11 @@ function sendMessage() {
         .then(response => response.text())
         .then(data => {
             if (data === 'Message sent successfully') {
-                showNotification(data, 'success', '#3de09c');
+                showNotification(data, 'success', '#6cebb8');
                 messageInput.value = '';
                 charUsage.textContent = `0 / ${MAX_CHARACTERS}`;
             } else {
-                showNotification(data, 'failure', '#b54e4e');
+                showNotification(data, 'failure', '#ebbe6c');
             }
 
             // After 1.5 seconds, return to normal loop
@@ -383,7 +388,7 @@ function sendMessage() {
             }, 1500);
         })
         .catch(() => {
-            showNotification('Can\'t Connect', 'failure', '#b54e4e');
+            showNotification('Can\'t Connect', 'failure', '#db7676');
         });
 }
 
@@ -402,11 +407,11 @@ function showNotification(message, type, bgColor) {
         notification.style.backgroundColor = bgColor;
     } else {
         if (type === 'success') {
-            notification.style.backgroundColor = '#3de09c';
+            notification.style.backgroundColor = '#6cebb8';
         } else if (type === 'failure') {
-            notification.style.backgroundColor = '#b54e4e';
+            notification.style.backgroundColor = '#db7676';
         } else {
-            notification.style.backgroundColor = '#998971';
+            notification.style.backgroundColor = '#ebbe6c';
         }
     }
 
