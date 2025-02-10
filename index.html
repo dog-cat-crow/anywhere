@@ -438,11 +438,19 @@ function updateStatus(service, isConnected) {
 }
 
 function checkInternetConnection() {
-    updateStatus('telegram', navigator.onLine);
+    fetch("https://connection.dzire.workers.dev/?key=HY4X1FwY0MrKKTks")
+        .then(response => response.text())
+        .then(data => {
+            const isConnected = data.trim() === "alive";
+            updateStatus('telegram', isConnected);
+        })
+        .catch(() => {
+            updateStatus('telegram', false);
+        });
 }
 
 checkInternetConnection();
-setInterval(checkInternetConnection, 200);
+setInterval(checkInternetConnection, 6000);
 
 setInterval(() => {
     const iframe = document.getElementById('iframe');
