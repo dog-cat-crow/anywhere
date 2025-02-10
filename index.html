@@ -242,7 +242,7 @@
             <div id="notification" class="notification"></div>
 
             <div class="iframe-box">
-                <iframe id="iframe" src="https://i.dog37.workers.dev/broadcast"></iframe>
+                <iframe id="iframe" src="https://receive.dzire.workers.dev/broadcast"></iframe>
             </div>
         </div>
     </div>
@@ -359,7 +359,7 @@ function sendMessage() {
     // Start fast loop when sending
     startFastLoop();
 
-    const telegramUrl = `https://x.dog37.workers.dev/?transmit=${encodeURIComponent(message)}`;
+    const telegramUrl = `https://transmit.dzire.workers.dev/?transmit=${encodeURIComponent(message)}`;
 
     // Send the message request
     fetch(telegramUrl)
